@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <link rel="stylesheet" type="text/css" href="/public/css/style.css">
+</head>
+<body>
+    <%- include('header'); %> 
+    <main>
+        <p class="home-title">トレーニング記録・編集</p>
+            <form action="/record/edit/<%= item.id %>" method="post">
+                <textarea class="item-edit" type="text" name="content"><%= item.content %></textarea>
+                <a class="btn btn-home" href="/record">もどる</a>
+                <input class="btn btn-home" type="submit" value="＋更新する">
+            </form>
+    </main>
+    <%- include('footer'); %> 
+</body>
+</html>
