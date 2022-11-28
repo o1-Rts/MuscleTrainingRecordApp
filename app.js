@@ -1,8 +1,8 @@
 const { query } = require("express");
+const { user, password } = require("./config");
 const express = require("express");
 const mysql = require('mysql');
 const moment = require('moment');
-const { user, password } = require("./config");
 const currentTime = moment();
 const app = express();
 const PORT = 3000;
