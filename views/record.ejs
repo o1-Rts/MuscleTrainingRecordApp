@@ -9,24 +9,28 @@
     <%- include('header'); %> 
     <main>
         <p class="home-title">トレーニング記録</p>
-        <a class="btn btn-home" href="/train-record">＋記録する</a>
-        <ul class="list">
-            <% records.forEach((record) => { %>
-            <li>
-                <!--日付の部分だけ取り出す-->
-                <% day = String(record.trainingDay) %>
-                <%= day.slice(0,10) %> 
-            <p><%= record.trainingTime %></p>
-            <h2><%= record.content %></h2>
-            <div class="item-menu">
-                <a href="/record/edit/<%= record.id %> ">編集</a>
-                <form action="/record/delete/<%= record.id %>" method="post">
-                    <input type="submit" value="削除">
-                </form>
-            </div>
-            </li>
-            <% }) %>
-        </ul>
+        <% if ( locals.isLoggedIn ) { %> 
+            <a class="btn btn-home" href="/train-record">＋記録する</a>
+            <ul class="list">
+                <% records.forEach((record) => { %>
+                <li>
+                    <!--日付の部分だけ取り出す-->
+                    <% day = String(record.trainingDay) %>
+                    <%= day.slice(0,10) %> 
+                <p><%= record.trainingTime %></p>
+                <h2><%= record.content %></h2>
+                <div class="item-menu">
+                    <a href="/record/edit/<%= record.id %> ">編集</a>
+                    <form action="/record/delete/<%= record.id %>" method="post">
+                        <input type="submit" value="削除">
+                    </form>
+                </div>
+                </li>
+                <% }) %>
+            </ul>
+        <% } else { %> 
+            <%- include('login-recommend'); %> 
+        <% } %> 
     </main>
     <%- include('footer'); %> 
 </body>

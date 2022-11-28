@@ -3,6 +3,8 @@ const { user, password } = require("./config");
 const express = require("express");
 const mysql = require('mysql');
 const moment = require('moment');
+const session = require('express-session');
+const bcrypt = require('bcrypt');
 const currentTime = moment();
 const app = express();
 const PORT = 3000;
@@ -18,6 +20,25 @@ const connection = mysql.createConnection({
     database: 'muscle_app'
 });
 
+app.use(
+    session({
+        secret: 'secret',
+        resave: false,
+        secure: false, //http通信:false, https通信:true
+        saveUninitialized: false,
+    })
+);
+
+app.use((req, res, next) => {
+    if (req.session.userId === undefined) {
+        res.locals.username = 'ゲスト';
+        res.locals.isLoggedIn = false;
+    } else {
+        res.locals.username = req.session.username;
+        res.locals.isLoggedIn = true;
+    }
+    next();
+});
 
 app.get('/', (req, res) => {
     res.render('top.ejs');
@@ -61,14 +82,15 @@ app.post('/create', (req, res) => {
 });
 
 app.get('/record', (req, res) => {
+    const username = req.session.username;
     connection.query(
-        'SELECT * FROM trainingRecord WHERE userId = ?',
-        ['user1'],
+        'SELECT * FROM trainingRecord WHERE username = ?',
+        [username],
         (error, results) => {
             console.log(results);
             res.render('record.ejs', {records: results});
         }
-    );
+    );   
 });
 
 app.get('/train-record', (req, res) => {
@@ -76,13 +98,13 @@ app.get('/train-record', (req, res) => {
 });
 
 app.post('/train-record', (req, res) => {
-    const user_id = 'user1';
+    const username = req.session.username;
     const now_day = currentTime.format("YYYY-MM-DD");
     const now_time = currentTime.format("HH:mm:ss");
     const content = req.body.content;
     connection.query(
-        'INSERT INTO trainingRecord (userId, trainingDay, trainingTime, content) VALUES (?, ?, ?, ?)',
-        [user_id, now_day, now_time, content],
+        'INSERT INTO trainingRecord (username, trainingDay, trainingTime, content) VALUES (?, ?, ?, ?)',
+        [username, now_day, now_time, content],
         (error, results) => {
             res.redirect('/record');
         }
@@ -122,6 +144,169 @@ app.post('/record/delete/:id', (req, res) => {
         }
     );
 });
+
+app.get('/mypage', (req, res) => {
+    const username = req.session.username;
+    connection.query(
+        'SELECT * FROM users WHERE username = ?',
+        [username],
+        (error, results) => {
+            res.render('mypage.ejs', {user: results[0]});
+        }
+    );
+})
+
+app.get('/signup', (req, res) => {
+    res.render('signup.ejs', {errors: []});
+});
+
+app.post('/signup', 
+    (req, res, next) => {
+        //入力値の空チェック
+        const username = req.body.username;
+        const email = req.body.email;
+        const password = req.body.password;
+        const errors = [];
+
+        if (username === '') {
+            errors.push('ユーザー名を入力してください');
+        }
+        if (email === '') {
+            errors.push('メールアドレスを入力してください');
+        }
+        if (password === '') {
+            errors.push('パスワードを入力してください');
+        }
+        
+        if (errors.length > 0) {
+            res.render('signup.ejs', {errors: errors});
+        } else {
+            next();
+        }
+    },
+    (req, res, next) => {
+        //ユーザー名の重複チェック
+        const username = req.body.username;
+        const errors = [];
+        connection.query(
+            'SELECT * FROM users WHERE username = ?',
+            [username],
+            (error, results) => {
+                if (results.length > 0) {
+                    errors.push('このユーザー名は既に登録されています');
+                    res.render('signup.ejs', {errors: errors});
+                } else {
+                    next();
+                }
+            }
+        );
+    },
+    (req, res, next) => {
+        //メールアドレスの重複チェック
+        const email = req.body.email;
+        const errors = [];
+        connection.query(
+            'SELECT * FROM users WHERE email = ?',
+            [email],
+            (error, results) => {
+                if (results.length > 0) {
+                    errors.push('このメールアドレスは既に登録されています');
+                    res.render('signup.ejs', {errors: errors});
+                } else {
+                    next();
+                }
+            }
+        );
+    },
+    (req, res) => {
+        //ユーザー登録
+        const username = req.body.username;
+        const email = req.body.email;
+        const password = req.body.password;
+        bcrypt.hash(password, 10, (error, hash) => {
+            connection.query(
+                'INSERT INTO users (username, email, password) VALUES (?, ?, ?)',
+                [username, email, hash],
+                (error, results) => {
+                    req.session.userId = results.insertId;
+                    req.session.username = username;
+                    res.redirect('/news');
+                }
+            );
+        })
+    }
+);
+
+app.get('/login', (req, res) => {
+    res.render('login.ejs', {errors: []});
+});
+
+app.post('/login',
+    (req, res, next) => {
+        //入力値の空チェック
+        const username = req.body.username;
+        const password = req.body.password;
+        const errors = [];
+        if (username === '') {
+            errors.push('ユーザー名を入力してください');
+        }
+        if (password === '') {
+            errors.push('パスワードを入力してください');
+        }
+
+        if (errors.length > 0) {
+            res.render('login.ejs', {errors: errors});
+        } else {
+            next();
+        }
+    },
+    (req, res, next) => {
+        //ユーザー名の有無チェック
+        const username = req.body.username;
+        const errors = [];
+        connection.query(
+            'SELECT * FROM users WHERE username = ?',
+            [username],
+            (error, results) => {
+                if (results.length > 0) {
+                    next();
+                } else {
+                    errors.push('ユーザー名が違います');
+                    res.render('login.ejs', {errors: errors});
+                }
+            }
+        );
+    },
+    (req, res) => {
+        //パスワードチェック
+        const username = req.body.username;
+        const password = req.body.password;
+        const errors = [];
+        connection.query(
+            'SELECT * FROM users WHERE username = ?',
+            [username],
+            (error, results) => {
+                const hash = results[0].password;
+                bcrypt.compare(password, hash, (error, isEqual) => {
+                    if (isEqual) {
+                            req.session.userId = results[0].id;
+                            req.session.username = results[0].username;
+                            res.redirect('/news');
+                        } else {
+                            errors.push('パスワードが違います');
+                            res.render('login.ejs', {errors: errors});
+                        }
+                    });
+            }
+        );
+    }  
+);
+
+app.get('/logout', (req, res) => {
+    req.session.destroy((error) => {
+        res.redirect('/news');
+    })
+})
 
 app.listen(PORT, () =>{
     console.log("サーバーが起動しました．");

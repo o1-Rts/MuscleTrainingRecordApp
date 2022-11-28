@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <link rel="stylesheet" type="text/css" href="/public/css/style.css">
+</head>
+<body>
+    <%- include('header'); %> 
+    <main>
+        <p class="home-title">マイページ</p>
+        <% if ( locals.isLoggedIn ) { %> 
+            <ul class="list">
+                <li><p><%= user.username %> </p></li>
+                <li><p><%= user.email %> </p></li>
+                <li><p><%= user.password %> </p></li>
+                <div class="item-menu"></div>
+            </ul>
+        <% } else { %> 
+            <%- include('login-recommend'); %> 
+        <% } %> 
+    </main>
+    <%- include('footer'); %> 
+</body>
+</html>

@@ -221,6 +221,19 @@ a {
   border:1px solid #dee7ec;
 }
 
+.errors {
+  font-size: 14px;
+  font-weight: bold;
+  color: #ED5974;
+  border: 1px solid #e29a9a;
+  padding: 12px 34px;
+  line-height: 1.6;
+  border-radius: 6px;
+  list-style: outside;
+  background-color: #fff;
+  margin-top: 30px;
+}
+
 footer {
   background-color: #F6FAFF;
   text-align: center;
@@ -502,7 +515,88 @@ main {
   padding: 80px 0 200px;
 }
 
+.sign {
+  border-top: 20px solid #ece745;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}
 
+.sign > .container {
+  width: 550px;
+  padding: 60px 0;
+}
+
+.sign > .container > p {
+  margin-top: 36px;
+  font-weight: bold;
+  font-size: 14px;
+  text-align: center;
+}
+
+.sign > .container > p > a {
+  display: inline-block;
+  margin-left: 20px;
+  color: #4CCFC9;
+}
+
+.sign > .container > p > a:hover {
+  color: #2DC2BC;
+}
+
+.sign > .container form {
+  padding-top: 40px;
+}
+
+.sign .panel {
+  padding: 60px 80px 40px;
+  background-color: #F6FAFF;
+}
+
+.sign h1 {
+  text-align: center;
+  font-size: 28px;
+  margin-bottom: 50px;
+}
+
+.sign h1 > a {
+  color: #2B546A;
+}
+
+.sign h1 > a:hover {
+  color: #2b6d90;
+}
+
+.sign h2 {
+  text-align: center;
+  font-size: 24px;
+}
+
+.sign form > p {
+  margin-bottom: 10px;
+}
+
+.sign input {
+  padding: 10px 20px;
+}
+
+.sign input:-webkit-autofill {
+  box-shadow: 0 0 0px 1000px #fff inset;
+}
+
+.sign input[name="username"] {
+  margin-bottom: 30px;
+}
+
+.sign input[name="email"] {
+  margin-bottom: 30px;
+}
+
+.sign input[type="submit"] {
+  margin-top: 50px;
+  width: 90%;
+}
 
 
 
