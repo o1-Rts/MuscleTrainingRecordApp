@@ -1,0 +1,28 @@
+{
+  "name": "muscle_training_record_app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/o1-Rts/MuscleTrainingRecordApp.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/o1-Rts/MuscleTrainingRecordApp/issues"
+  },
+  "homepage": "https://github.com/o1-Rts/MuscleTrainingRecordApp#readme",
+  "keywords": [],
+  "dependencies": {
+    "ejs": "^3.1.8",
+    "express": "^4.18.2",
+    "moment": "^2.29.4",
+    "mysql": "^2.18.1",
+    "nodemon": "^2.0.20"
+  }
+}

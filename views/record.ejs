@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <link rel="stylesheet" type="text/css" href="/public/css/style.css">
+</head>
+<body>
+    <%- include('header'); %> 
+    <main>
+        <p class="home-title">トレーニング記録</p>
+        <a class="btn btn-home" href="/train-record">＋記録する</a>
+        <ul class="list">
+            <% records.forEach((record) => { %>
+            <li>
+                <!--日付の部分だけ取り出す-->
+                <% day = String(record.trainingDay) %>
+                <%= day.slice(0,10) %> 
+            <p><%= record.trainingTime %></p>
+            <h2><%= record.content %></h2>
+            </li>
+            <% }) %>
+        </ul>
+    </main>
+    <%- include('footer'); %> 
+</body>
+</html>

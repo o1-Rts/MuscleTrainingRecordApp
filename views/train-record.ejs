@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>MUSCLER</title>
+    <link rel="stylesheet" type="text/css" href="/public/css/style.css">
+</head>
+<body>
+    <%- include('header'); %>
+    <main>
+        <p class="home-title">トレーニング記録入力</p>
+        <div class="create-form">
+            <form action="/train-record" method="post">
+                <p>トレーニング内容</p>
+                <textarea class="create-content" type="text" name="content"></textarea>
+                <input type="submit" class="btn-submit" value="記録する">
+            </form>
+        </div>
+    </main>
+    <%- include('footer'); %> 
+</body>
+</html>
