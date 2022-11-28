@@ -171,6 +171,7 @@ a {
     height: 54px;
     padding: 0 90px;
     border-radius: 4px;
+    border: none;
 }
 
 .btn:hover {
@@ -219,8 +220,6 @@ a {
   font-size:18px;
   border:1px solid #dee7ec;
 }
-
-
 
 footer {
   background-color: #F6FAFF;
@@ -342,6 +341,49 @@ header > p:after {
   font-size: 40px;
   margin-top: 30px;
   margin-bottom: 30px;
+}
+
+.item-edit {
+  width: 100%;
+  height: 500px;
+}
+
+.item-menu {
+  display: flex;
+}
+
+.item-menu form {
+  width: 60px;
+  text-align: center;
+}
+
+.item-menu form input {
+  font-size: 16px;
+  color: #8fb4db;
+  cursor: pointer;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  padding: 0 5px;
+  border-color: #c2d1da;
+  outline: none;
+  background: transparent;
+}
+
+.item-menu form input:hover {
+  color: #ff7f8c;
+  transition: all 0.3s ease;
+}
+
+.item-menu a {
+  width: 60px;
+  font-size: 16px;
+  color: #bac6d3;
+  text-align: center;
+}
+
+.item-menu a:hover {
+  color: #1969c4;
 }
 
 .list li, .list-admin li {

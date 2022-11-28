@@ -88,8 +88,40 @@ app.post('/train-record', (req, res) => {
     );
 });
 
+app.get('/record/edit/:id', (req, res) => {
+    const id = req.params.id;
+    connection.query(
+        'SELECT * FROM trainingRecord WHERE id = ?',
+        [id],
+        (error, results) => {
+            res.render('edit.ejs', {item: results[0]});
+        }
+    );
+});
+
+app.post('/record/edit/:id', (req, res) => {
+    const id = req.params.id;
+    const content = req.body.content;
+    connection.query(
+        'UPDATE trainingRecord SET content = ? WHERE id = ?',
+        [content, id],
+        (error, results) => {
+            res.redirect('/record');
+        }
+    );
+});
+
+app.post('/record/delete/:id', (req, res) => {
+    const id = req.params.id;
+    connection.query(
+        'DELETE FROM trainingRecord WHERE id = ?',
+        [id],
+        (error, results) => {
+            res.redirect('/record');
+        }
+    );
+});
+
 app.listen(PORT, () =>{
     console.log("サーバーが起動しました．");
-    //console.log(currentTime.format("YYYY-MM-DD"));
-    //console.log(currentTime.format("HH:mm:ss"));
 });

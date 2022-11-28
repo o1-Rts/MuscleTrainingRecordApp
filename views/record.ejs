@@ -18,6 +18,12 @@
                 <%= day.slice(0,10) %> 
             <p><%= record.trainingTime %></p>
             <h2><%= record.content %></h2>
+            <div class="item-menu">
+                <a href="/record/edit/<%= record.id %> ">編集</a>
+                <form action="/record/delete/<%= record.id %>" method="post">
+                    <input type="submit" value="削除">
+                </form>
+            </div>
             </li>
             <% }) %>
         </ul>
