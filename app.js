@@ -1,7 +1,8 @@
 const { query } = require("express");
 const express = require("express");
 const mysql = require('mysql');
-const moment = require('moment')
+const moment = require('moment');
+const { user, password } = require("./config");
 const currentTime = moment();
 const app = express();
 const PORT = 3000;
@@ -12,8 +13,8 @@ app.use(express.urlencoded({extended: false}));
 
 const connection = mysql.createConnection({
     host: 'localhost',
-    user: 'root',
-    password: 'MEunsvcyle100',
+    user: user,
+    password: password,
     database: 'muscle_app'
 });
 
