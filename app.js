@@ -5,6 +5,8 @@ const mysql = require('mysql');
 const moment = require('moment');
 const session = require('express-session');
 const bcrypt = require('bcrypt');
+const axios = require('axios');
+const cheerio = require('cheerio');
 const currentTime = moment();
 const app = express();
 const PORT = 3000;
@@ -19,6 +21,24 @@ const connection = mysql.createConnection({
     password: password,
     database: 'muscle_app'
 });
+
+/*
+const URL = 'https://www.esquire.com/jp/menshealth/fitness/a32441572/how-to-do-a-perfect-pushup/';
+const data = [];
+
+axios(URL)
+  .then((res) => {
+    const htmlParser = res.data;
+    const $ = cheerio.load(htmlParser);
+    $('.content-header', htmlParser).each(function () {
+        const title = $(this).find('.content-hed').text();
+        data.push({title});
+        console.log(data);
+    })
+}).catch((error) => {
+    console.log(error);
+});
+*/
 
 app.use(
     session({
